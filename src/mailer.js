@@ -68,10 +68,10 @@ Mailer.prototype.send_mail = function(data) {
 			} else {
 				switch (backend.type) {
 				case 'smtp':
-					if (!('auth' in backend)) {
-						console.log('WARNING: using outdated backend configuration, please update your config.js.');
-						backend.auth = { user: backend.username, pass: backend.password };
-					}
+					//if (!('auth' in backend)) {
+					//	console.log('WARNING: using outdated backend configuration, please update your config.js.');
+					//	backend.auth = { user: backend.username, pass: backend.password };
+					//}
 					var transport = nodemailer.createTransport('SMTP', backend);
 					transport.sendMail(mail, email_callback);
 					//transport.close();
