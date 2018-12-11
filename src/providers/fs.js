@@ -27,7 +27,7 @@ var Message = require('../message').Message;
 //   type: 'fs',
 //   path: __dirname + '/messages/'
 // }
-var Provider = function(config) {
+var Provider = function (config) {
 	this.message = new Message(config);
 	this.path = config.provider.path;
 
@@ -37,20 +37,26 @@ var Provider = function(config) {
 	}
 };
 
-Provider.prototype.make_path = function(id) {
+Provider.prototype.make_path = function (id) {
 	return join(this.path, id.toString());
 };
 
 Provider.prototype.get = function (id, callback) {
 	var path = this.make_path(id);
 	var message = this.message;
-	fs.readFile(path, function(err, data) {
+	fs.readFile(path, function (err, data) {
 		if (err) {
 			callback(err);
 		} else {
 			callback(err, message.parse(data.toString()));
 			// delete the file
-			fs.unlink(path);
+			fs.unlink(path, function (err) {
+				if (err) {
+					console.log("unlink failed", err);
+				} else {
+					console.log("file deleted");
+				}
+			});
 		}
 	});
 };
@@ -58,17 +64,17 @@ Provider.prototype.get = function (id, callback) {
 Provider.prototype.put = function (id, data, callback) {
 	var path = this.make_path(id);
 	var message = this.message;
-	fs.exists(path, function(exists) {
+	fs.exists(path, function (exists) {
 		if (exists) {
 			callback('duplicate');
 		} else {
 			var raw_data = message.compile(data);
-			fs.writeFile(path, raw_data, function(err) {
+			fs.writeFile(path, raw_data, function (err) {
 				if (err) {
 					var error = (function () {
 						//TODO list known treatable errors.
-						switch(err) {
-						default: return 'unkown';
+						switch (err) {
+							default: return 'unkown';
 						}
 					})();
 					callback(error);
