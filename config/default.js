@@ -9,7 +9,7 @@ var __basedir = join(__dirname, '..');
 // ## Primary Settings
 //
 cfg.http = {
-	listen: '127.0.0.1',
+	listen: '0.0.0.0',
 	port: 8001
 };
 
@@ -17,6 +17,7 @@ cfg.http = {
 // Never prefix the protocol (http or https). It is generated according to
 // the access.
 cfg.baseurl = '//' + cfg.http.listen + ':' + cfg.http.port;
+
 
 // cfg URL will be used on the footer links on mails
 cfg.siteurl = 'http:' + cfg.baseurl;
@@ -37,8 +38,9 @@ cfg.assets_url = '/';
 //
 // the available langs are on locale dir
 cfg.enabled_langs = [
+	'de',
 	'en',
-	'br',
+	'br',	
 ];
 
 
@@ -124,7 +126,7 @@ cfg.ratelimit = null;
 // which is loaded when `grunt watch` is running and makes the page reload every
 // time a source file is changed.
 //
-cfg.livereload = false;
+cfg.livereload = true;
 //cfg.livereload = "localhost:35729";
 
 
